@@ -24,6 +24,8 @@ function refreshWeather(response) {
   windElement.innerHTML = `${response.data.wind.speed}km/h`;
   iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
   temperatureElement.innerHTML = Math.round(temperature);
+
+  getForecast(response.data.city);
 }
 
 // Format Date
@@ -68,7 +70,16 @@ function handleSearchSubmit(event) {
 }
 
 // forecast function to show the rest 6 week days
-function displayForecast() {
+
+function getForecast(city) {
+  let apiKey = "f5371a45b3fc047t75a40051bo80cbe3";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+  console.log(response.data);
+
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   let forecastHtml = "";
 
@@ -97,4 +108,3 @@ searchFormElement.addEventListener("submit", handleSearchSubmit);
 
 // Default search
 searchCity("Paris");
-displayForecast();
